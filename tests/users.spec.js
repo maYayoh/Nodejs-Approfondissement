@@ -13,19 +13,35 @@ describe("tester API users", () => {
   const MOCK_DATA = [
     {
       _id: USER_ID,
-      name: "ana",
-      email: "nfegeg@gmail.com",
-      password: "azertyuiop",
+      name: "dummy",
+      email: "mock@dummy.foo",
+      password: "azerty123",
     },
   ];
   const MOCK_DATA_CREATED = {
-    name: "test",
-    email: "test@test.net",
-    password: "azertyuiop",
+    name: "dummy",
+    email: "created@dummy.foo",
+    password: "azerty123",
   };
 
-  beforeEach(() => {
-    token = jwt.sign({ userId: USER_ID }, config.secretJwtToken);
+
+  const ADMIN_MOCK = {
+    name: "admin",
+    email: "admin@dummy.foo",
+    password: "loulou123",
+    role: "admin",
+  }
+
+  let user
+
+  beforeEach(async () => {
+    const userData = await request(app)
+      .post("/api/users")
+      .send(ADMIN_MOCK)
+
+    user = userData.body
+
+    token = jwt.sign({ userId: user._id }, config.secretJwtToken);
     // mongoose.Query.prototype.find = jest.fn().mockResolvedValue(MOCK_DATA);
     mockingoose(User).toReturn(MOCK_DATA, "find");
     mockingoose(User).toReturn(MOCK_DATA_CREATED, "save");
