@@ -13,9 +13,9 @@ describe("tester API users", () => {
   const MOCK_DATA = [
     {
       _id: USER_ID,
-      name: "ana",
-      email: "nfegeg@gmail.com",
-      password: "azertyuiop",
+      name: "foo",
+      email: "foo@bar.sin",
+      password: "azerty123",
     },
   ];
   const MOCK_DATA_CREATED = {
@@ -26,7 +26,6 @@ describe("tester API users", () => {
 
   beforeEach(() => {
     token = jwt.sign({ userId: USER_ID }, config.secretJwtToken);
-    // mongoose.Query.prototype.find = jest.fn().mockResolvedValue(MOCK_DATA);
     mockingoose(User).toReturn(MOCK_DATA, "find");
     mockingoose(User).toReturn(MOCK_DATA_CREATED, "save");
   });
@@ -48,7 +47,7 @@ describe("tester API users", () => {
     expect(res.body.name).toBe(MOCK_DATA_CREATED.name);
   });
 
-  test("Est-ce userService.getAll", async () => {
+  test("[Users] Mock call", async () => {
     const spy = jest
       .spyOn(usersService, "getAll")
       .mockImplementation(() => "test");
